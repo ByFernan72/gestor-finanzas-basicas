@@ -90,15 +90,15 @@ function startBackend() {
     }
     const userDbFile = path.join(userDbDir, 'gestordb.mv.db');
     
-    // Sembrar la base de datos con los datos migrados si no existe o está vacía (< 40 KB)
+    // Sembrar la base de datos inicial si no existe en userData
     const bundledDb = path.join(path.dirname(jarPath), 'data', 'gestordb.mv.db');
     const rootDb = path.join(__dirname, '..', 'data', 'gestordb.mv.db');
     const templateDb = fs.existsSync(bundledDb) ? bundledDb : (fs.existsSync(rootDb) ? rootDb : null);
     
-    if (templateDb && (!fs.existsSync(userDbFile) || fs.statSync(userDbFile).size < 40000)) {
+    if (templateDb && (!fs.existsSync(userDbFile) || fs.statSync(userDbFile).size === 0)) {
       try {
         fs.copyFileSync(templateDb, userDbFile);
-        console.log('[Gestor] Base de datos migrada copiada a userData:', userDbFile);
+        console.log('[Gestor] Base de datos inicial copiada a userData:', userDbFile);
       } catch (e) {
         console.error('[Gestor] No se pudo copiar la base de datos inicial:', e);
       }

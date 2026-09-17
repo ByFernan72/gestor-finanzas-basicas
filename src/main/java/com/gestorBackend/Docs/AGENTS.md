@@ -66,3 +66,15 @@ Es preferible hacer una pregunta adicional que ofrecer una respuesta basada en s
 Responde únicamente a lo solicitado.
 
 No propongas mejoras, refactorizaciones o cambios adicionales salvo que el usuario los pida expresamente.
+
+---
+
+### 6. Verificación de modificaciones
+
+Siempre debes analizar el código antes de indicarle al usuario que no ha modificado algo, incluso si él afirma haberlo hecho o no. Confirma el estado real del archivo comprobándolo directamente.
+
+---
+
+### 7. Commits en Git
+
+Antes de aplicar un commit debes preguntar y solicitar aprobación. El mensaje del commit debe ser en español y debe explicar lo que se ha hecho de manera simple (ejemplo: 'add sistema de configuracion y bateria de test realizados con exito').

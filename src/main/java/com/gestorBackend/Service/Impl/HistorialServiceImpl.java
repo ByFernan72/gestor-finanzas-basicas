@@ -1,13 +1,12 @@
 package com.gestorBackend.Service.Impl;
 
-import com.gestorBackend.Model.Activo;
+import com.gestorBackend.Model.Activo;  
 import com.gestorBackend.Model.Historial;
 import com.gestorBackend.Repository.ActivoRepository;
 import com.gestorBackend.Repository.HistorialRepository;
 import com.gestorBackend.Service.HistorialService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,7 +20,6 @@ public class HistorialServiceImpl implements HistorialService {
     private final ActivoRepository activoRepository;
 
     @Override
-    @Scheduled(cron = "0 0 12 * * 1")
     @Transactional
     public void registrarHistorialActivos() {
         List<Activo> listaActivos = activoRepository.findAll();

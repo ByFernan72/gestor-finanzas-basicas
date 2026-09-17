@@ -152,6 +152,6 @@ if (fs.existsSync(dbFile) && fs.statSync(dbFile).size > 0) {
 
 const exeSize = (fs.statSync(gestorExe).size / 1024 / 1024).toFixed(1);
 console.log('');
-console.log('✅ Empaquetado completado.');
+console.log('Empaquetado completado.');
 console.log(`   Ejecutable: ${gestorExe} (${exeSize} MB)`);
 console.log(`   Para distribuir: comprime toda la carpeta dist/win-unpacked/`);

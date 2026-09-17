@@ -434,7 +434,7 @@ export default function Cartera({ onMenuClick }: CarteraProps): React.JSX.Elemen
                 >
                   <div className="cartera-card-left">
                     <h3 className="cartera-title">{cartera.nombreCartera}</h3>
-                    <p className="cartera-description">{cartera.descripcion || 'Sin descripción'}</p>
+                    <p className="cartera-description">{cartera.descripcion || ''}</p>
                   </div>
                   <div className="cartera-card-right">
                     <div className="cartera-total">
