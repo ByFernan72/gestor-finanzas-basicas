@@ -8,5 +8,7 @@ import java.math.BigDecimal;
 
 public interface MovimientoService {
     void transferirBalance(Long idCarteraOrigen, Long idCarteraDestino, Long idActivoOrigen, Long idActivoDestino, BigDecimal cantidadOrigen, BigDecimal cantidadDestino, String nombreNuevoActivo, TipoActivo tipoNuevoActivo);
+    void ingresarBalance(Long idCartera, Long idActivo, BigDecimal cantidad);
+    void gastarBalance(Long idCartera, Long idActivo, BigDecimal cantidad);
     Page<TransferenciaDto> listarTransferencias(Pageable pageable);
 }

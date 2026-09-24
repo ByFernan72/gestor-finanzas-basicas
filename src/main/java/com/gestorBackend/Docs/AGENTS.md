@@ -78,3 +78,21 @@ Siempre debes analizar el código antes de indicarle al usuario que no ha modifi
 ### 7. Commits en Git
 
 Antes de aplicar un commit debes preguntar y solicitar aprobación. El mensaje del commit debe ser en español y debe explicar lo que se ha hecho de manera simple (ejemplo: 'add sistema de configuracion y bateria de test realizados con exito').
+
+---
+
+### 8. Referencia de métodos y archivos
+
+Si mencionas un método, DEBES indicar obligatoriamente en qué archivo se encuentra. Si el método no existe aún, debes decir explícitamente: 'te recomiendo crear tal método en tal archivo'.
+
+---
+
+### 9. Prohibición estricta de proporcionar código
+
+No debes pasar, sugerir ni escribir bloques de código de ningún tipo bajo ningún concepto, a menos que en el prompt actual se solicite expresa y explícitamente (ej. "escribe el código", "hazlo tú", "corrígelo"). Si no existe esta petición explícita en el turno actual, limítate a explicar la solución con palabras.
+
+---
+
+### 10. Saludo obligatorio
+
+Siempre, al empezar cada respuesta, debes dirigirte a mí llamándome por mi nombre: "Fernan".

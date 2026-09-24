@@ -74,6 +74,13 @@ public final class InMemoryRepositories {
                 store.remove((Long) args[0]);
                 yield null;
             }
+            case "delete" -> {
+                Activo a = (Activo) args[0];
+                if (a != null && a.getIdActivo() != null) {
+                    store.remove(a.getIdActivo());
+                }
+                yield null;
+            }
             case "findAll" -> new ArrayList<>(store.values());
             case "findAllByIdCartera" -> store.values().stream().filter(a -> a.getIdCartera().equals((Long) args[0])).toList();
             case "findById" -> Optional.ofNullable(store.get((Long) args[0]));

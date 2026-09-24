@@ -16,8 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ObtenerDatosCompletosCarteraRequestDto {
-    @NotNull private Long idCartera;
-    @NotBlank private String nombreCartera;
+    @NotNull
+    @Positive
+    private Long idCartera;
+
+    @NotBlank
+    private String nombreCartera;
     private String descripcion;
     private LocalDateTime createdAt;
     List<ObtenerDatosCompletosCarteraRequestDto.ObtenerDatosCompletosActivoDto> activos;
@@ -27,9 +31,13 @@ public class ObtenerDatosCompletosCarteraRequestDto {
     @AllArgsConstructor
     public static class ObtenerDatosCompletosActivoDto {
         private Long idActivo;
-        @NotBlank private String nombreActivo;
+        @NotBlank
+        private String nombreActivo;
         private TipoActivo tipoActivo;
-        @NotNull @Positive private BigDecimal balance;
+
+        @NotNull
+        @Positive
+        private BigDecimal balance;
         private LocalDateTime fechaObtencionActivo;
     }
 

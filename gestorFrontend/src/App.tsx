@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import api from './api/client';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Cartera from './pages/Cartera';
@@ -19,6 +20,12 @@ export default function App(): React.JSX.Element {
     document.body.classList.add(`${theme}-theme`);
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  // Validar si toca guardar historial (silencioso en segundo plano)
+  useEffect(() => {
+    api.post('/historial/saved/validar')
+      .catch((error) => console.error("Error al validar historial silenciosamente:", error));
+  }, []);
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));

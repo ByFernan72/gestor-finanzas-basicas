@@ -1,22 +1,29 @@
 package com.gestor.Service.Impl;
 
 import com.gestorBackend.Model.Activo;
+import com.gestorBackend.Model.Config;
 import com.gestorBackend.Model.Enum.TipoActivo;
 import com.gestorBackend.Model.Historial;
 import com.gestorBackend.Repository.ActivoRepository;
+import com.gestorBackend.Repository.ConfigRepository;
 import com.gestorBackend.Repository.HistorialRepository;
 import com.gestor.support.InMemoryRepositories;
 import com.gestorBackend.Service.Impl.HistorialServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class HistorialServiceImplTest {
 
@@ -24,6 +31,7 @@ class HistorialServiceImplTest {
     private Map<Long, Historial> historialStore;
     private AtomicLong activoSequence;
     private AtomicLong historialSequence;
+    private ConfigRepository configRepository;
     private HistorialServiceImpl service;
 
     @BeforeEach
@@ -35,7 +43,9 @@ class HistorialServiceImplTest {
 
         ActivoRepository activoRepository = InMemoryRepositories.activoRepository(activoStore, activoSequence);
         HistorialRepository historialRepository = InMemoryRepositories.historialRepository(historialStore, historialSequence);
-        service = new HistorialServiceImpl(historialRepository, activoRepository);
+        configRepository = mock(ConfigRepository.class);
+        
+        service = new HistorialServiceImpl(configRepository, historialRepository, activoRepository);
     }
 
     @Test
@@ -69,5 +79,40 @@ class HistorialServiceImplTest {
         service.registrarHistorialActivos();
 
         assertThat(historialStore).isEmpty();
+    }
+
+    @Test
+    void verificarRegistrarFecha_debeRegistrarSiConfigEstaVacio() {
+        when(configRepository.findById("fecha_ultimo_guardado")).thenReturn(Optional.empty());
+        activoStore.put(1L, new Activo(1L, 10L, "BTC", TipoActivo.CRYPTO, new BigDecimal("100"), LocalDateTime.now()));
+
+        service.verificarRegistrarFecha();
+
+        assertThat(historialStore).hasSize(1);
+        verify(configRepository, times(1)).save(any(Config.class));
+    }
+
+    @Test
+    void verificarRegistrarFecha_debeRegistrarSiEsUnMesNuevo() {
+        Config oldConfig = new Config("fecha_ultimo_guardado", LocalDate.now().minusMonths(1).toString());
+        when(configRepository.findById("fecha_ultimo_guardado")).thenReturn(Optional.of(oldConfig));
+        activoStore.put(1L, new Activo(1L, 10L, "BTC", TipoActivo.CRYPTO, new BigDecimal("100"), LocalDateTime.now()));
+
+        service.verificarRegistrarFecha();
+
+        assertThat(historialStore).hasSize(1);
+        verify(configRepository, times(1)).save(any(Config.class));
+    }
+
+    @Test
+    void verificarRegistrarFecha_noDebeRegistrarSiEsElMismoMes() {
+        Config recentConfig = new Config("fecha_ultimo_guardado", LocalDate.now().toString());
+        when(configRepository.findById("fecha_ultimo_guardado")).thenReturn(Optional.of(recentConfig));
+        activoStore.put(1L, new Activo(1L, 10L, "BTC", TipoActivo.CRYPTO, new BigDecimal("100"), LocalDateTime.now()));
+
+        service.verificarRegistrarFecha();
+
+        assertThat(historialStore).isEmpty();
+        verify(configRepository, never()).save(any(Config.class));
     }
 }

@@ -264,4 +264,37 @@ class MovimientoServiceImplTest {
         )).isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No se puede transferir un activo hacia sí mismo en la misma cartera");
     }
+
+    @Test
+    @DisplayName("Verifica que ingresarBalance suma la cantidad correctamente")
+    void ingresarBalanceSumaCantidadCorrectamente() {
+        carteraStore.put(1L, new Cartera(1L, "Mi Cartera", "", LocalDateTime.now()));
+        activoStore.put(10L, new Activo(10L, 1L, "EUR", TipoActivo.FIAT, new BigDecimal("100"), LocalDateTime.now()));
+
+        service.ingresarBalance(1L, 10L, new BigDecimal("50"));
+
+        assertThat(activoStore.get(10L).getBalance()).isEqualByComparingTo("150");
+    }
+
+    @Test
+    @DisplayName("Verifica que gastarBalance resta la cantidad correctamente")
+    void gastarBalanceRestaCantidadCorrectamente() {
+        carteraStore.put(1L, new Cartera(1L, "Mi Cartera", "", LocalDateTime.now()));
+        activoStore.put(10L, new Activo(10L, 1L, "EUR", TipoActivo.FIAT, new BigDecimal("100"), LocalDateTime.now()));
+
+        service.gastarBalance(1L, 10L, new BigDecimal("30"));
+
+        assertThat(activoStore.get(10L).getBalance()).isEqualByComparingTo("70");
+    }
+
+    @Test
+    @DisplayName("Verifica que gastarBalance elimina el activo si el saldo llega a cero")
+    void gastarBalanceEliminaActivoSiSaldoCero() {
+        carteraStore.put(1L, new Cartera(1L, "Mi Cartera", "", LocalDateTime.now()));
+        activoStore.put(10L, new Activo(10L, 1L, "EUR", TipoActivo.FIAT, new BigDecimal("100"), LocalDateTime.now()));
+
+        service.gastarBalance(1L, 10L, new BigDecimal("100"));
+
+        assertThat(activoStore.containsKey(10L)).isFalse();
+    }
 }

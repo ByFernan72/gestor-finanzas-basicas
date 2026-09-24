@@ -119,6 +119,77 @@ public class MovimientoServiceImpl implements MovimientoService {
     }
 
     @Override
+    public void ingresarBalance(Long idCartera, Long idActivo, BigDecimal cantidad) {
+        synchronized (transferLock) {
+            new TransactionTemplate(transactionManager).execute(status -> {
+                if (!carteraRepository.existsByIdCartera(idCartera)) {
+                    throw new IllegalArgumentException("La cartera con id " + idCartera + " no existe");
+                }
+                if (!activoRepository.existsByIdActivo(idActivo)) {
+                    throw new IllegalArgumentException("El activo con id " + idActivo + " no existe");
+                }
+
+                Activo activo = activoRepository.getActivoByIdActivo(idActivo);
+                if (!activo.getIdCartera().equals(idCartera)) {
+                    throw new IllegalArgumentException("El activo con id " + idActivo + " no pertenece a la cartera " + idCartera);
+                }
+
+                activo.setBalance(activo.getBalance().add(cantidad));
+                activoRepository.saveAndFlush(activo);
+
+                Movimiento movimiento = new Movimiento();
+                movimiento.setIdCarteraDestino(idCartera);
+                movimiento.setIdActivoDestino(idActivo);
+                movimiento.setCantidadDestino(cantidad);
+                movimiento.setNombreCarteraDestino(carteraRepository.getCarteraByIdCartera(idCartera).getNombreCartera());
+                movimiento.setNombreActivoDestino(activo.getNombreActivo());
+                movimiento.setFechaMovimiento(LocalDateTime.now());
+                movimientoRepository.saveAndFlush(movimiento);
+
+                return null;
+            });
+        }
+    }
+
+    @Override
+    public void gastarBalance(Long idCartera, Long idActivo, BigDecimal cantidad) {
+        synchronized (transferLock) {
+            new TransactionTemplate(transactionManager).execute(status -> {
+                if (!carteraRepository.existsByIdCartera(idCartera)) {
+                    throw new IllegalArgumentException("La cartera con id " + idCartera + " no existe");
+                }
+                if (!activoRepository.existsByIdActivo(idActivo)) {
+                    throw new IllegalArgumentException("El activo con id " + idActivo + " no existe");
+                }
+
+                Activo activo = activoRepository.getActivoByIdActivo(idActivo);
+                if (!activo.getIdCartera().equals(idCartera)) {
+                    throw new IllegalArgumentException("El activo con id " + idActivo + " no pertenece a la cartera " + idCartera);
+                }
+
+                BigDecimal balanceRestante = activo.getBalance().subtract(cantidad);
+                if (balanceRestante.compareTo(BigDecimal.ZERO) <= 0) {
+                    activoRepository.delete(activo);
+                } else {
+                    activo.setBalance(balanceRestante);
+                    activoRepository.saveAndFlush(activo);
+                }
+
+                Movimiento movimiento = new Movimiento();
+                movimiento.setIdCarteraOrigen(idCartera);
+                movimiento.setIdActivoOrigen(idActivo);
+                movimiento.setCantidadOrigen(cantidad);
+                movimiento.setNombreCarteraOrigen(carteraRepository.getCarteraByIdCartera(idCartera).getNombreCartera());
+                movimiento.setNombreActivoOrigen(activo.getNombreActivo());
+                movimiento.setFechaMovimiento(LocalDateTime.now());
+                movimientoRepository.saveAndFlush(movimiento);
+
+                return null;
+            });
+        }
+    }
+
+    @Override
     public Page<TransferenciaDto> listarTransferencias(Pageable pageable) {
         return movimientoRepository.findAllTransferencias(pageable);
     }

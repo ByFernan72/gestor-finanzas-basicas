@@ -26,9 +26,17 @@ class HistorialControllerTest {
 
     @Test
     void registrarHistorial_debeLlamarServicioYDevolverNoContent() throws Exception {
-        mockMvc.perform(post("/api/v1/historial"))
+        mockMvc.perform(post("/api/v1/historial/saved/registro"))
                 .andExpect(status().isNoContent());
 
         verify(historialService).registrarHistorialActivos();
+    }
+
+    @Test
+    void verificarRegistrarFecha_debeLlamarServicioYDevolverNoContent() throws Exception {
+        mockMvc.perform(post("/api/v1/historial/saved/validar"))
+                .andExpect(status().isNoContent());
+
+        verify(historialService).verificarRegistrarFecha();
     }
 }

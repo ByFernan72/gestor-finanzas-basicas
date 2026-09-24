@@ -16,9 +16,15 @@ public class HistorialController {
 
     private final HistorialService historialService;
 
-    @PostMapping
+    @PostMapping("/saved/registro")
     public ResponseEntity<Void> registrarHistorialActivos() {
         historialService.registrarHistorialActivos();
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/saved/validar")
+    public ResponseEntity<Void> verificarRegistrarFecha(){
+        historialService.verificarRegistrarFecha();
         return ResponseEntity.noContent().build();
     }
 }
