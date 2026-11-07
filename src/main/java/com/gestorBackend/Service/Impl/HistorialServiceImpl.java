@@ -44,7 +44,8 @@ public class HistorialServiceImpl implements HistorialService {
     }
 
     @Override
-    public void verificarRegistrarFecha() {
+    @Transactional
+    public synchronized void verificarRegistrarFecha() {
         Optional<Config> configOpt = configRepository.findById("fecha_ultimo_guardado");
 
         if (configOpt.isEmpty()) {

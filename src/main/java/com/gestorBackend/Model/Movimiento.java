@@ -20,33 +20,21 @@ public class Movimiento {
     @Column(name = "id_movimiento")
     private Long idMovimiento;
 
-    @NotNull(message = "El id de cartera origen es obligatorio")
-    @Positive(message = "El id de cartera origen debe ser positivo")
     @Column(name = "id_cartera_origen")
     private Long idCarteraOrigen;
 
-    @NotNull(message = "El id de cartera destino es obligatorio")
-    @Positive(message = "El id de cartera destino debe ser positivo")
     @Column(name = "id_cartera_destino")
     private Long idCarteraDestino;
 
-    @NotNull(message = "El id de activo origen es obligatorio")
-    @Positive(message = "El id de activo origen debe ser positivo")
     @Column(name = "id_activo_origen")
     private Long idActivoOrigen;
 
-    @NotNull(message = "El id de activo destino es obligatorio")
-    @Positive(message = "El id de activo destino debe ser positivo")
     @Column(name = "id_activo_destino")
     private Long idActivoDestino;
 
-    @NotNull(message = "La cantidad origen es obligatoria")
-    @Positive(message = "La cantidad origen debe ser mayor a 0")
     @Column(name = "cantidad_origen")
     private BigDecimal cantidadOrigen;
 
-    @NotNull(message = "La cantidad destino es obligatoria")
-    @Positive(message = "La cantidad destino debe ser mayor a 0")
     @Column(name = "cantidad_destino")
     private BigDecimal cantidadDestino;
 

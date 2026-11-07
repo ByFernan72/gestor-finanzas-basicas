@@ -25,7 +25,11 @@ public class OperacionProgramadaRequest {
 
     // Puede ser null si es un ingreso general sin activo asociado
     @Positive
-    private Long idActivo;
+    private Long idActivoOrigen;
+
+    // Puede ser null si queremos que se auto-genere el activo por defecto
+    @Positive
+    private Long idActivoDestino;
 
     @NotNull(message = "La cantidad es obligatoria")
     @Positive(message = "La cantidad debe ser mayor a 0")

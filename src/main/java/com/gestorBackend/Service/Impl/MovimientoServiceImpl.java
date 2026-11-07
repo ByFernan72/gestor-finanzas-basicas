@@ -30,7 +30,6 @@ public class MovimientoServiceImpl implements MovimientoService {
     private final MovimientoRepository movimientoRepository;
     private final PlatformTransactionManager transactionManager;
 
-
     private final Object transferLock = new Object();
 
     @Override
@@ -125,21 +124,33 @@ public class MovimientoServiceImpl implements MovimientoService {
                 if (!carteraRepository.existsByIdCartera(idCartera)) {
                     throw new IllegalArgumentException("La cartera con id " + idCartera + " no existe");
                 }
-                if (!activoRepository.existsByIdActivo(idActivo)) {
-                    throw new IllegalArgumentException("El activo con id " + idActivo + " no existe");
+                Activo activo;
+                Long idActivoActual = idActivo;
+                if (idActivoActual == null) {
+                    activo = new Activo();
+                    activo.setIdCartera(idCartera);
+                    activo.setNombreActivo("Ingreso Automático EUR");
+                    activo.setTipoActivo(TipoActivo.FIAT);
+                    activo.setBalance(cantidad);
+                    activo.setFechaObtencionActivo(LocalDateTime.now());
+                    activoRepository.saveAndFlush(activo);
+                    
+                    idActivoActual = activo.getIdActivo(); // update local variable for Movimiento
+                } else {
+                    if (!activoRepository.existsByIdActivo(idActivoActual)) {
+                        throw new IllegalArgumentException("El activo con id " + idActivoActual + " no existe");
+                    }
+                    activo = activoRepository.getActivoByIdActivo(idActivoActual);
+                    if (!activo.getIdCartera().equals(idCartera)) {
+                        throw new IllegalArgumentException("El activo con id " + idActivoActual + " no pertenece a la cartera " + idCartera);
+                    }
+                    activo.setBalance(activo.getBalance().add(cantidad));
+                    activoRepository.saveAndFlush(activo);
                 }
-
-                Activo activo = activoRepository.getActivoByIdActivo(idActivo);
-                if (!activo.getIdCartera().equals(idCartera)) {
-                    throw new IllegalArgumentException("El activo con id " + idActivo + " no pertenece a la cartera " + idCartera);
-                }
-
-                activo.setBalance(activo.getBalance().add(cantidad));
-                activoRepository.saveAndFlush(activo);
 
                 Movimiento movimiento = new Movimiento();
                 movimiento.setIdCarteraDestino(idCartera);
-                movimiento.setIdActivoDestino(idActivo);
+                movimiento.setIdActivoDestino(idActivoActual);
                 movimiento.setCantidadDestino(cantidad);
                 movimiento.setNombreCarteraDestino(carteraRepository.getCarteraByIdCartera(idCartera).getNombreCartera());
                 movimiento.setNombreActivoDestino(activo.getNombreActivo());

@@ -29,7 +29,8 @@ public class OperacionProgramadaServiceImpl implements OperacionProgramadaServic
         OperacionProgramada op = new OperacionProgramada();
         op.setIdCarteraOrigen(request.getIdCarteraOrigen());
         op.setIdCarteraDestino(request.getIdCarteraDestino());
-        op.setIdActivo(request.getIdActivo());
+        op.setIdActivoOrigen(request.getIdActivoOrigen());
+        op.setIdActivoDestino(request.getIdActivoDestino());
         op.setCantidad(request.getCantidad());
         op.setTipoTimeFrame(request.getTipoTimeFrame());
         op.setProximaEjecucion(request.getProximaEjecucion());
@@ -66,7 +67,8 @@ public class OperacionProgramadaServiceImpl implements OperacionProgramadaServic
         OperacionProgramada op = operacionProgramadaRepository.getReferenceById(idOperacionProgramada);
         op.setIdCarteraOrigen(request.getIdCarteraOrigen());
         op.setIdCarteraDestino(request.getIdCarteraDestino());
-        op.setIdActivo(request.getIdActivo());
+        op.setIdActivoOrigen(request.getIdActivoOrigen());
+        op.setIdActivoDestino(request.getIdActivoDestino());
         op.setCantidad(request.getCantidad());
         op.setTipoTimeFrame(request.getTipoTimeFrame());
         op.setProximaEjecucion(request.getProximaEjecucion());
@@ -115,16 +117,24 @@ public class OperacionProgramadaServiceImpl implements OperacionProgramadaServic
     }
 
     private void ejecutarOperacion(OperacionProgramada op) {
+
         if (op.getTipoOperacion() == TipoOperacion.INGRESO) {
-            movimientoService.ingresarBalance(op.getIdCarteraDestino(), op.getIdActivo(), op.getCantidad());
+            movimientoService.ingresarBalance(op.getIdCarteraDestino(), op.getIdActivoDestino(), op.getCantidad());
         }
         else if (op.getTipoOperacion() == TipoOperacion.TRANSFERENCIA) {
-            // Lógica de transferencia
-            // Actualmente no esta implementado
+            movimientoService.transferirBalance(
+                    op.getIdCarteraOrigen(),
+                    op.getIdCarteraDestino(),
+                    op.getIdActivoOrigen(),
+                    op.getIdActivoDestino(),
+                    op.getCantidad(),
+                    op.getCantidad(),
+                    "Transferencia Automatica",
+                    com.gestorBackend.Model.Enum.TipoActivo.FIAT
+            );
         }
         else if (op.getTipoOperacion() == TipoOperacion.GASTO) {
-            // Lógica de gastos
-            // Actualmente no esta implementado
+            movimientoService.gastarBalance(op.getIdCarteraOrigen(), op.getIdActivoOrigen(), op.getCantidad());
         }
 
         LocalDateTime nuevaFecha = calcularProximaFecha(op);

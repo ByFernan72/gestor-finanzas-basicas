@@ -178,11 +178,11 @@ body.dark-theme .option-check {
   border-radius: 8px;
 }
 
-.custom-select-container.table-select .custom-select-dropdown {
+.custom-select-dropdown.table-select {
   padding: 4px;
 }
 
-.custom-select-container.table-select .custom-select-option {
+.custom-select-dropdown.table-select .custom-select-option {
   padding: 6px 10px;
   font-size: 0.85rem;
   border-radius: 6px;

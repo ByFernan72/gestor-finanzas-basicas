@@ -21,18 +21,25 @@ import java.time.LocalDateTime;
 public class OperacionProgramada {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Positive
     @Column(name = "id_operacion")
     private Long idOperacion;
 
+    @Positive
     @Column(name = "id_cartera_origen")
     private Long idCarteraOrigen;
 
-    @NotNull(message = "La cartera de destino debe ser valida para realizar la operacion")
+    @Positive
+    @NotNull(message = "La cartera de destino debe ser valida para realizar la operación")
     @Column(name = "id_cartera_destino")
     private Long idCarteraDestino;
 
-    @Column(name = "id_activo")
-    private Long idActivo;
+    @Positive
+    @Column(name = "id_activo_origen")
+    private Long idActivoOrigen;
+
+    @Column(name = "id_activo_destino")
+    private Long idActivoDestino;
 
     @NotNull(message = "La cantidad destino es obligatoria")
     @Positive(message = "La cantidad destino debe ser mayor a 0")

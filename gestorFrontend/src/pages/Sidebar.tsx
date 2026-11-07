@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { FiHome, FiBriefcase, FiClock, FiSettings, FiSun, FiMoon, FiX } from 'react-icons/fi';
+import { FiHome, FiBriefcase, FiClock, FiSettings, FiSun, FiMoon, FiX, FiRepeat } from 'react-icons/fi';
 import './css/Sidebar.css';
 
 export interface SidebarProps {
@@ -43,6 +43,11 @@ export default function Sidebar({
           <NavLink to="/cartera" className="sidebar-item" onClick={closeSidebar}>
             <FiBriefcase className="sidebar-item-icon" />
             <span>Carteras</span>
+          </NavLink>
+
+          <NavLink to="/operaciones-recurrentes" className="sidebar-item" onClick={closeSidebar}>
+            <FiRepeat className="sidebar-item-icon" />
+            <span>Op. Recurrentes</span>
           </NavLink>
 
           <NavLink to="/historial" className="sidebar-item" onClick={closeSidebar}>

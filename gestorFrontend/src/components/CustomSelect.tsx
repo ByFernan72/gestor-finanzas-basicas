@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { FiChevronDown, FiCheck } from 'react-icons/fi';
 import './CustomSelect.css';
 
@@ -31,6 +32,8 @@ export default function CustomSelect({
 }: CustomSelectProps): React.JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const [coords, setCoords] = useState({ left: 0, top: 0, width: 0 });
 
   // Normalizar opciones a objetos { value, label, disabled }
   const normalizedOptions: SelectOptionItem[] = options.map((opt) => {
@@ -48,9 +51,48 @@ export default function CustomSelect({
     (opt) => String(opt.value) === String(value)
   );
 
+  const updateCoords = useCallback(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      // Dropdown appears just below the trigger
+      setCoords({
+        left: rect.left,
+        top: rect.bottom + 6,
+        width: rect.width,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      updateCoords();
+      
+      const handleScroll = (e: Event) => {
+        if (dropdownRef.current && dropdownRef.current.contains(e.target as Node)) {
+          return;
+        }
+        setIsOpen(false);
+      };
+
+      window.addEventListener('resize', handleScroll);
+      window.addEventListener('scroll', handleScroll, true);
+      
+      return () => {
+        window.removeEventListener('resize', handleScroll);
+        window.removeEventListener('scroll', handleScroll, true);
+      };
+    }
+  }, [isOpen, updateCoords]);
+
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
@@ -79,6 +121,46 @@ export default function CustomSelect({
     }
   };
 
+  const renderDropdown = () => {
+    if (!isOpen) return null;
+    
+    return createPortal(
+      <div 
+        className={`custom-select-dropdown ${className}`}
+        role="listbox"
+        ref={dropdownRef}
+        style={{
+          position: 'fixed',
+          left: coords.left,
+          top: coords.top,
+          width: coords.width,
+          zIndex: 9999
+        }}
+      >
+        {normalizedOptions.length === 0 ? (
+          <div className="custom-select-empty">No hay opciones disponibles</div>
+        ) : (
+          normalizedOptions.map((opt) => {
+            const isSelected = String(opt.value) === String(value);
+            return (
+              <div
+                key={String(opt.value)}
+                className={`custom-select-option ${isSelected ? 'selected' : ''} ${opt.disabled ? 'option-disabled' : ''}`}
+                onClick={() => handleSelect(opt.value, opt.disabled)}
+                role="option"
+                aria-selected={isSelected}
+              >
+                <span className="option-label">{opt.label}</span>
+                {isSelected && <FiCheck className="option-check" />}
+              </div>
+            );
+          })
+        )}
+      </div>,
+      document.body
+    );
+  };
+
   return (
     <div
       className={`custom-select-container ${className} ${disabled ? 'disabled' : ''} ${isOpen ? 'open' : ''}`}
@@ -100,29 +182,7 @@ export default function CustomSelect({
         <FiChevronDown className={`trigger-icon ${isOpen ? 'rotate' : ''}`} />
       </button>
 
-      {isOpen && (
-        <div className="custom-select-dropdown" role="listbox">
-          {normalizedOptions.length === 0 ? (
-            <div className="custom-select-empty">No hay opciones disponibles</div>
-          ) : (
-            normalizedOptions.map((opt) => {
-              const isSelected = String(opt.value) === String(value);
-              return (
-                <div
-                  key={String(opt.value)}
-                  className={`custom-select-option ${isSelected ? 'selected' : ''} ${opt.disabled ? 'option-disabled' : ''}`}
-                  onClick={() => handleSelect(opt.value, opt.disabled)}
-                  role="option"
-                  aria-selected={isSelected}
-                >
-                  <span className="option-label">{opt.label}</span>
-                  {isSelected && <FiCheck className="option-check" />}
-                </div>
-              );
-            })
-          )}
-        </div>
-      )}
+      {renderDropdown()}
     </div>
   );
 }

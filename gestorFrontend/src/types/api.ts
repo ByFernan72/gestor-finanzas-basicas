@@ -1,4 +1,4 @@
-export type TipoActivo = 'FIAT' | 'CRYPTO' | 'ACCION' | 'MATERIA_PRIMA' | 'OTRO';
+export type TipoActivo = 'FIAT' | 'CRYPTO' | 'FONDO_INDEXADO' | 'BONOS_TESORO' | 'ETF' | 'ACCION' | 'OTHER';
 
 export interface CarteraTopDto {
   idCartera: number;
@@ -117,4 +117,34 @@ export interface ActualizarActivoPayload {
   tipoActivo: TipoActivo;
   balance: number;
   fechaObtencionActivo?: string;
+}
+
+export type TipoOperacion = 'INGRESO' | 'TRANSFERENCIA' | 'GASTO';
+export type TipoTimeFrame = 'SEMANAL' | 'QUINCENAL' | 'MENSUAL' | 'TRIMESTRAL' | 'ANUAL';
+
+export interface OperacionProgramadaDto {
+  idOperacion: number;
+  idCarteraOrigen?: number;
+  idCarteraDestino: number;
+  idActivoOrigen?: number;
+  idActivoDestino: number;
+  cantidad: number;
+  tipoOperacion: TipoOperacion;
+  concepto?: string;
+  tipoTimeFrame: TipoTimeFrame;
+  proximaEjecucion: string;
+  isActive: boolean;
+  createdAt?: string;
+}
+
+export interface OperacionProgramadaRequest {
+  idCarteraOrigen?: number;
+  idCarteraDestino: number;
+  idActivoOrigen?: number;
+  idActivoDestino: number;
+  cantidad: number;
+  tipoOperacion: TipoOperacion;
+  concepto?: string;
+  tipoTimeFrame: TipoTimeFrame;
+  proximaEjecucion: string;
 }

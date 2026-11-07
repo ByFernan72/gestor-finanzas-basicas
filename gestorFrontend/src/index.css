@@ -222,6 +222,32 @@ body {
   transform: translateY(0);
 }
 
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-hover, rgba(255, 255, 255, 0.05));
+  border-color: var(--text-secondary);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
 .page-divider {
   height: 1px;
   background: linear-gradient(90deg, var(--border-color), transparent);

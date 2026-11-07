@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import Cartera from './pages/Cartera';
 import NuevaCartera from './pages/NuevaCartera';
+import OperacionesRecurrentes from './pages/OperacionesRecurrentes';
 import Historial from './pages/Historial';
 import Ajustes from './pages/Ajustes';
 import './index.css';
@@ -21,10 +22,10 @@ export default function App(): React.JSX.Element {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // Validar si toca guardar historial (silencioso en segundo plano)
+  // Validar si toca guardar historial o ejecutar operaciones recurrentes (silencioso en segundo plano)
   useEffect(() => {
-    api.post('/historial/saved/validar')
-      .catch((error) => console.error("Error al validar historial silenciosamente:", error));
+    api.post('/operacion-programada/saved/validar')
+      .catch((error) => console.error("Error al validar operaciones silenciosamente:", error));
   }, []);
 
   const toggleTheme = () => {
@@ -50,6 +51,7 @@ export default function App(): React.JSX.Element {
         <Route path="/" element={<Home onMenuClick={handleMenuClick} />} />
         <Route path="/cartera" element={<Cartera onMenuClick={handleMenuClick} />} />
         <Route path="/cartera/nueva" element={<NuevaCartera onMenuClick={handleMenuClick} />} />
+        <Route path="/operaciones-recurrentes" element={<OperacionesRecurrentes onMenuClick={handleMenuClick} />} />
         <Route path="/historial" element={<Historial onMenuClick={handleMenuClick} />} />
         <Route path="/ajustes" element={<Ajustes onMenuClick={handleMenuClick} />} />
       </Route>
