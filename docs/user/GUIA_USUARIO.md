@@ -50,8 +50,9 @@ Un **Activo** es cualquier bien o moneda con valor económico dentro de una cart
 * **Tipos de Activos Disponibles:**
   * Divisas tradicionales (FIAT / Dinero en efectivo o banco).
   * Criptomonedas.
-  * Acciones / Fondos indexados.
-  * Materias primas u otros activos.
+  * Acciones y ETFs.
+  * Fondos indexados y Bonos del Tesoro.
+  * Otros activos personalizados.
 * **Añadir o Editar Activos:**
   1. Entra en la cartera correspondiente.
   2. Pulsa en **Añadir Activo**.
@@ -73,7 +74,25 @@ Los **Movimientos** permiten registrar transferencias de dinero entre dos carter
 
 ---
 
-## 5. Dashboard y Métricas
+---
+
+## 5. Operaciones Recurrentes y Programadas
+
+La sección **Op. Recurrentes** del menú lateral te permite automatizar movimientos periódicos para no tener que introducirlos manualmente:
+
+* **Tipos de Operaciones Soportadas:**
+  * **Ingresos recurrentes:** Nóminas periódicas, rendimientos de depósitos o ingresos pasivos hacia una cartera y activo específicos.
+  * **Gastos recurrentes:** Pagos fijos, recibos o suscripciones que descuentan automáticamente saldo de una cartera.
+  * **Transferencias periódicas:** Automatización de planes de ahorro (DCA) entre dos carteras (por ejemplo, transferir 200 EUR cada mes de tu cuenta bancaria a tu broker).
+* **Frecuencias / Intervalos (Timeframes):**
+  * Semanal, Quincenal, Mensual, Trimestral o Anual.
+* **Ejecución Automática:**
+  * Al iniciar la aplicación, el sistema comprueba silenciosamente si existen operaciones programadas cuya fecha haya vencido y las ejecuta automáticamente actualizando los balances y el historial de transacciones.
+  * Puedes pausar o reactivar cualquier operación recurrente en cualquier momento sin necesidad de eliminarla.
+
+---
+
+## 6. Dashboard y Métricas
 
 En la pantalla principal (**Dashboard**) encontrarás un resumen ejecutivo de tus finanzas:
 
@@ -83,7 +102,7 @@ En la pantalla principal (**Dashboard**) encontrarás un resumen ejecutivo de tu
 
 ---
 
-## 6. Copias de Seguridad (Backups)
+## 7. Copias de Seguridad (Backups)
 
 Dado que la aplicación guarda todo en un archivo local sin depender de la nube:
 

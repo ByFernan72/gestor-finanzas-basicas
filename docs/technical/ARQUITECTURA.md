@@ -43,6 +43,8 @@ La base de datos actual utiliza el motor **H2** en modo archivo persistente.
 - **Movimiento (movimiento):** Historial transaccional entre activos/carteras origen y destino con cantidades transferidas.
 - **Historial (historial):** Snapshots periódicos de balances para reconstrucción de gráficos históricos.
 - **Perfil (perfil):** Información del usuario y enlaces guardados (perfil_links).
+- **Operación Programada (operacion_programada):** Automatización periódica de movimientos (ingresos, gastos o transferencias) con id, carteras/activos origen y destino, cantidad, frecuencia temporal (SEMANAL, QUINCENAL, MENSUAL, TRIMESTRAL, ANUAL), proxima_ejecucion y estado is_active.
+- **Configuración (config):** Almacén clave-valor persistente para marcas temporales del sistema (ej. fecha_ultimo_guardado) y flags internos.
 
 ### Gestión DDL:
 Hibernate se encuentra configurado con spring.jpa.hibernate.ddl-auto=update, lo que permite:

@@ -78,7 +78,7 @@ if (fs.existsSync(path.join(ROOT, 'splash.html'))) {
 // package.json mínimo necesario para que Electron encuentre el entry point
 const pkgJson = {
   name: 'gestor',
-  version: '1.0.0',
+  version: '1.1.0',
   main: 'main.js',
 };
 fs.writeFileSync(

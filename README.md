@@ -31,7 +31,7 @@ El directorio `dist/` (binarios de la aplicación) no se sube a Git al estar en 
 Para obtener y ejecutar la aplicación tienes dos opciones:
 
 ### Opción A: Descargar la Release lista para usar (Recomendado para usuarios)
-1. Ve a la sección de **[Releases de GitHub](https://github.com/ByFernan72/gestor/releases)** y descarga el archivo comprimido `Gestor-v1.0.0-windows-x64.zip` de la última versión.
+1. Ve a la sección de **[Releases de GitHub](https://github.com/ByFernan72/gestor/releases)** y descarga el archivo comprimido `Gestor-v1.1.0-windows-x64.zip` de la última versión.
 2. Descomprímelo en la carpeta que prefieras de tu ordenador.
 3. Haz doble clic en **`Gestor.exe`**.
 

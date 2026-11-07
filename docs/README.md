@@ -9,6 +9,7 @@
 * **Objetivo:** Explicar de forma clara, sencilla y paso a paso cómo utilizar la aplicación de escritorio:
   * Cómo dar de alta carteras y activos.
   * Cómo registrar movimientos y transferencias entre cuentas.
+  * Cómo programar y automatizar operaciones periódicas recurrentes (nóminas, gastos fijos, ahorro automático).
   * Cómo interpretar las métricas del Dashboard.
   * Cómo realizar copias de seguridad de los datos locales (gestordb.mv.db).
 

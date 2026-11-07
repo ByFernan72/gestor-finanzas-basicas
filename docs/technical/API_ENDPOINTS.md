@@ -69,6 +69,31 @@ Base URL local: http://localhost:8080/api/v1
 
 ---
 
+---
+
+## 8. Operaciones Programadas y Recurrentes (/api/v1/operacion-programada)
+
+| Método | Endpoint | Descripción | Payload Request | Respuesta |
+|---|---|---|---|---|
+| POST | /api/v1/operacion-programada/crear-operacion-programada | Crear una nueva regla de operación recurrente | OperacionProgramadaRequest | OperacionProgramada (200 OK) |
+| GET | /api/v1/operacion-programada/listado | Listado paginado de operaciones periódicas | Parámetros Pageable (size, page, sort) | Page<OperacionProgramada> |
+| PUT | /api/v1/operacion-programada/modificar/{id} | Modificar una operación recurrente existente | OperacionProgramadaRequest | OperacionProgramada (200 OK) |
+| PATCH | /api/v1/operacion-programada/{id}/estado | Activar o pausar una operación recurrente | Query param `nuevoEstado` (boolean) | 204 No Content |
+| DELETE | /api/v1/operacion-programada/del/{id} | Eliminar una operación programada | Ninguno | 204 No Content |
+| POST | /api/v1/operacion-programada/saved/validar | Comprobación y ejecución automática de operaciones pendientes e historial | Ninguno | 204 No Content |
+
+---
+
+## 9. Configuración del Sistema (/api/v1/config)
+
+| Método | Endpoint | Descripción | Payload Request | Respuesta |
+|---|---|---|---|---|
+| GET | /api/v1/config/{clave} | Obtener valor de configuración interna por su clave | Ninguno | Config (200 OK) |
+| POST | /api/v1/config | Crear nueva clave de configuración | Config (JSON) | Config (200 OK) |
+| PUT | /api/v1/config/{clave} | Actualizar el valor de una clave | Query param `valor` | Config (200 OK) |
+
+---
+
 ## Formato Estándar de Respuestas de Error
 
 Todas las excepciones capturadas por `GlobalExceptionHandler` devuelven el siguiente formato estándar JSON:
